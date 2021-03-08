@@ -30,6 +30,28 @@ Vue.component('batepapo', {
             digitado: ''
         }
     },
+    filters: {
+        confere_nick: function(nick){
+            let bloquear = ['bobo', 'cara de mamão', 'feio']
+        
+            if(bloquear.indexOf(nick) == -1){
+                // pode
+                return nick;
+            } else {
+                return 'nick inválido';
+            }},
+        chatguard: function(mensagem){
+            let bloqueadas = ['água']
+        
+            for(let palavra of bloqueadas){
+                mensagem = mensagem.replace(palavra, '******');
+            }
+            return mensagem;
+        },
+        exemplo: function(a, b){
+            return b + ' : ' + a;
+        }
+    },
     methods: {
         send: function () {
             let nome = 'anônimo'
@@ -40,7 +62,7 @@ Vue.component('batepapo', {
     },
     template: '<div v-if="visivel" class="card">\
     <div class="card-body">\
-        <span v-bind:title="conversa.timestamp" v-for="conversa in conversas"><b>{{conversa.nome}}</b> disse: {{conversa.msg}}<br></span>\
+        <span v-bind:title="conversa.timestamp" v-for="conversa in conversas"><b>{{conversa.nome | confere_nick | exemplo("Nome")}}</b> disse: {{conversa.msg | chatguard}}<br></span>\
     </div>\
     <div class="card-footer">\
         <div class="form-group mb-3">\
@@ -52,6 +74,26 @@ Vue.component('batepapo', {
     </div>\
     </div>'
 })
+
+/*Vue.filter('confere_nick', function(nick){
+    let bloquear = ['bobo', 'cara de mamão', 'feio']
+
+    if(bloquear.indexOf(nick) == -1){
+        // pode
+        return nick;
+    } else {
+        return 'nick inválido';
+    }
+})
+
+Vue.filter('chatguard', function(mensagem){
+    let bloqueadas = ['água']
+
+    for(let palavra of bloqueadas){
+        mensagem = mensagem.replace(palavra, '******');
+    }
+    return mensagem;
+})*/
 
 
 new Vue({
